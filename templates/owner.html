@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block right_nav %}
+<div class="form-group navbar-body pull-right">
+	<div class="btn-group user-menu">
+		<button type="button" class="btn btn-default glyphicon glyphicon-user dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	     <span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu">
+			<li><a href="#"> logout </a></li>
+			<li><a href="#">Another action</a></li>
+			<li><a href="#">Something else here</a></li>
+			<li role="separator" class="divider"></li>
+			<li><a href="#">Separated link</a></li>
+		</ul>
+	</div>
+</div>
+<div>
+	
+</div>
+
+{% endblock %}
+
+{% block body %}
+<br/><br/><br/><br/>
+<h1>Test</h1>
+<h3>{{error}}</h3>
+{% endblock %}

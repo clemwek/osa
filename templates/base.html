@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Online Shopping App</title>
+
+	<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/jquery-ui.min.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" media="screen">
+	<link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#"><span>company</span>Logo</a>
+			</div>
+			<!-- Single button -->
+			{% block right_nav %}{% endblock %}
+		</div>
+	</nav><!-- End of head nav-->
+	
+	{% with messages = get_flashed_messages() %}
+		{% if messages %}
+			{% for message in messages %}
+				<div class="alert alert-danger alert-dismisable" role="alert">
+				<button type="button" class="close" data-dismiss="alert" arial-label="close"><span aria-hidden="true">&times;</span></button>
+					{{message }}
+				</div>
+			{% endfor %}
+		{% endif %}
+	{% endwith %}
+
+
+
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#"><span>Company</span>Name</a>
+			</div>
+							
+		</div><!-- /.container-fluid -->
+	</nav>
+		
+	<!-- Side bar nav-->
+<!--<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+	<ul class="nav menu">
+		<li class="active"><a href="#">
+			<i class="glyphicon glyphicon-user visible-xs"></i> 
+			<span class="visible-sm visible-md visible-lg"><i class="glyphicon glyphicon-user"></i> Profile </span>
+		</a></li>
+		<li class="active"><a href="applied_jobs.php">
+			<i class="glyphicon glyphicon-briefcase visible-xs"></i> 
+			<span class="visible-sm visible-md visible-lg"><i class="glyphicon glyphicon-briefcase"></i> Applied Jobs </span>
+		</a></li>
+		<li class="active"><a href="available_jobs.php">
+			<i class="glyphicon glyphicon-tasks visible-xs"></i> 
+			<span class="visible-sm visible-md visible-lg"><i class="glyphicon glyphicon-tasks"></i> Available Jobs </span>
+		</a></li>
+		<li class="active"><a href="#">
+			<i class="glyphicon glyphicon-user visible-xs"></i> 
+			<span class="visible-sm visible-md visible-lg"><i class="glyphicon glyphicon-user"></i> Profile </span>
+		</a></li>
+	</ul>
+</div>--><!-- End of side nav-->
+		
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">			
+		<!--<div class="row">
+			<ol class="breadcrumb">
+				<li><a href="#"class="glyphicon glyphicon-home"></a></li>
+				<li class="active"></li>
+			</ol>
+		</div>--><!--/.row -Bread crumbs-->
+		
+		<div class="row">
+			
+		</div><!--/.row-->
+		
+		<div class="row">
+            
+		</div><!--/.row-->
+					
+		<div class="row">
+			
+		</div><!--/.row-->
+	</div>	<!--/.main-->
+{% block body %}{% endblock %}
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Signup Form</h4>
+      </div>
+      <form action="/signup/" method="post">
+	      <div class="modal-body">
+	        	<fieldset>
+	        		<div class="form-group">
+						<div class="control-label">
+							<label for="" class="control-label">Fill in the form bellow: </label>
+						</div>
+						<div class="col-xs-4">
+							<label class="sr-only" for="first_name">userName: </label>
+							<input type="text" name="username" class="form-control" id="username" placeholder="username" value="{{request.form.username}}"  title="Please enter your username." required>
+							<p class="help-text small">Enter your username.</p>
+						</div>
+						<div class="col-xs-4">
+							<label class="sr-only" for="last_name">password: </label>
+							<input type="password" name="password" class="form-control" id="password" placeholder="password" value="{{request.form.password}}" title="Please enter your password."  required>
+							<p class="help-text small">Enter your password.</p>
+						</div>
+						<div class="col-xs-4">
+							<label class="sr-only" for="last_name">password again: </label>
+							<input type="password" name="confirm" class="form-control" id="confirm" placeholder="confirm" value="{{request.form.confirm}}" title="Please enter your password again."  required>
+							<p class="help-text small">Enter your password again.</p>
+						</div>
+					</div><!-- End of general information-->
+					<div class="form-group">
+						<div class="col-xs-4">
+							<label class="sr-only" for="name">Name: </label>
+							<input type="text" name="name" class="form-control" id="name" placeholder="name" value="{{request.form.name}}"  title="Please enter your name." required>
+							<p class="help-text small">Enter your name.</p>
+						</div>
+						<div class="col-xs-4">
+							<label class="sr-only" for="last_name">phone_number: </label>
+							<input type="text" name="phone_number" class="form-control" id="phone_number" placeholder="phone number" value="{{request.form.phone_number}}" title="Please enter your phone number."  required>
+							<p class="help-text small">Enter your phone number.</p>
+						</div>
+						<div class="col-xs-4">
+							<label class="sr-only" for="last_name">password again: </label>
+							<input type="text" name="email" class="form-control" id="email" placeholder="email" value="{{request.form.email}}" title="Please enter your email."  required>
+							<p class="help-text small">Enter your email.</p>
+						</div>
+					</div><!-- End of general information-->
+	        	</fieldset>
+	        
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="submit" class="btn btn-success">Save changes</button>
+	      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+	<script src="{{ url_for('static', filename='js/jquery-3.1.0.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>

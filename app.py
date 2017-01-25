@@ -31,6 +31,9 @@ def signin():
 
 				user = cur.execute(query).fetchall()
 				if username == user[0][1] and password == user[0][2]:
+					session['login'] = True
+					session['id'] = user[0]
+					session['username'] = user[1]
 					return redirect(url_for('owners'))
 				else:
 					return redirect(url_for('home_page'), msg="Username/password is not correct.")

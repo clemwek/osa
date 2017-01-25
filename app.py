@@ -21,27 +21,21 @@ def home_page():
 def signin():
 	try:
 		if request.method == 'POST':
-			attempted_username = request.form['username']
-			attempted_password = request.form['password']
+			username = request.form['username']
+			password = request.form['password']
 
-			if attempted_username == 'admin' and attempted_password == 'password':
-				return redirect(url_for('owners'))
-			else:
-				return redirect(url_for('home_page'))
+			with sql.connect("database.db", timeout=1) as con:
+				cur = con.cursor()
+
+				query = "SELECT * FROM users WHERE username = '"+username+"'"
+
+				user = cur.execute(query).fetchall()
+				if username == user[0][1] and password == user[0][2]:
+					return redirect(url_for('owners'))
+				else:
+					return redirect(url_for('home_page'), msg="Username/password is not correct.")
 	except Exception as e:
-		return redirect(url_for('home_page'))
-
-
-# class signup(Form):
-	# """docstring for ClassName"""
-	# username = TextField('Username', [validators.Length(min=4, max=20)])
-	# password = PasswordField('password', [validators.Required(), 
-	# 	validators.EqualTo('confirm', message='Passwords must match.')])
-	# confirm = PasswordField('Repeart password')
-	# email = TextField('Email Adress', [validators.Length(min=10, max=50)])
-	# phone_number = TextField('Phone number', [validators.Length(min=10, max=15)])
-	# name = TextField('Name', [validators.Length(min=5, max=50)])
-		
+		return redirect(url_for('home_page'), msg="something went wrong!!!")
 
 @app.route('/signup/', methods=['POST'])
 def signup():
@@ -60,20 +54,28 @@ def signup():
 			with sql.connect("database.db", timeout=1) as con:
 				cur = con.cursor()
 
+				query = "SELECT * FROM users WHERE username = '"+username+"'"
+
+				user = cur.execute(query).fetchall()
+				if len(user) > 0:
+					'''This means that the username is already used'''
+					msg= "Username already used"
+					return render_template('index.html', msg=msg)
 				cur.execute("INSERT INTO users (username, password, name, phone, email, prev) VALUES (?, ?, ?, ?, ?, ?)", (username, password, name, phone, email, 'admin'))
 				con.commit()
 				msg = "Record successfully added"
+				con.close()
+				return redirect(url_for('owners'), msg=msg)
 	except Exception as e:
 		con.rollback()
 		msg = "error in insert operation"
-	finally:
-		return (msg)
 		con.close()
+		return redirect(url_for('home_page'), msg=msg)
 
 
 @app.route('/owners')
 def owners():
-	return ('Work inprogress!!!')
+	return render_template('owner.html')
 
 
 @app.route('/products')

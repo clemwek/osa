@@ -15,12 +15,14 @@ DATABASE = 'database.db'
 
 @app.route('/')
 def home_page():
-	flash("Flash test!!!")
+	'''this load the index.html'''
+	# flash("Flash test!!!")
 	return render_template('index.html')
 
 def login_required(f):
 	@wraps(f)
 	def wrap(*args, **kwargs):
+		'''For restriction to login pgs'''
 		if 'logged_in' in session:
 			return f(*args, **kwargs)
 		else:
@@ -31,12 +33,14 @@ def login_required(f):
 @app.route('/logout/')
 @login_required
 def logout():
+	'''To log out'''
 	session.clear()
 	msg = 'you have been logged out'
 	return redirect(url_for('home_page'), msg=msg)
 
 @app.route('/signin', methods=['POST', 'GET'])
 def signin():
+	'''To signin'''
 	try:
 		if request.method == 'POST':
 			username = request.form['username']
@@ -128,9 +132,87 @@ def addstore():
 		return 'Not OK'#redirect(url_for('owners'))
 
 
-@app.route('/products')
-def products():
-	return ('Products page, Work inprogress!!!')
+@app.route('/addprod')
+def addprod():
+	try:
+		if request.method == 'POST':
+			store_id = request.form['store_id']
+			proName = request.form['prodName']
+			price = request.form['price']
+			with sql.connect("database.db", timeout=1) as con:
+				cur = con.cursor()
+				query = "SELECT * FROM products WHERE prod_name = '"+prodName+"' AND location = '"+location+"'"
+				store = cur.execute(query).fetchall()
+				print (store)
+				if len(store) > 0:
+					'''This means that the username is already used'''
+					msg= "Store already used"
+					return render_template('owner.html', msg=msg)
+				cur.execute("INSERT INTO stores (u_id, name, location) VALUES (?, ?, ?)", (storeName, location, user_id))
+				con.commit()
+				msg = "Record successfully added"
+				# con.close()
+				return redirect(url_for('owners'))
+	except Exception as e:
+		print (str(e))
+		# con.rollback()
+		msg = "error in insert operation"
+		con.close()
+		return 'Not OK'#redirect(url_for('owners'))
+
+@app.route('/')
+def read_stores():
+	try:
+		with sql.connect("database.db", timeout=1) as con:
+			cur = con.cursor()
+			query = "SELECT * FROM stores"
+			stores = cur.execute(query).fetchall()
+			return stores
+	except Exception as e:
+		msg = 'Something went wrong'
+		return (msg)
+
+
+@app.route('/')
+def read_products():
+	try:
+		with sql.connect("database.db", timeout=1) as con:
+			cur = con.cursor()
+			query = "SELECT * FROM products"
+			products = cur.execute(query).fetchall()
+			return productss
+	except Exception as e:
+		msg = 'Something went wrong'
+		return (msg)
+
+@app.route('/')
+def read_stores_for_owner():
+	try:
+		with sql.connect("database.db", timeout=1) as con:
+			cur = con.cursor()
+			query = "SELECT * FROM stores WHERE u_id -"+u_id
+			stores = cur.execute(query).fetchall()
+			return stores
+	except Exception as e:
+		msg = 'Something went wrong'
+		return (msg)
+
+
+@app.route('/')
+def read_products_for_store():
+	try:
+		with sql.connect("database.db", timeout=1) as con:
+			cur = con.cursor()
+			query = "SELECT * FROM products WHERE store_id = "+store_id
+			products = cur.execute(query).fetchall()
+			return productss
+	except Exception as e:
+		msg = 'Something went wrong'
+		return (msg)
+
+@app.route('/')
+def share_link():
+	return "shared"
 
 @app.errorhandler(404)
 def page_not_found(e):

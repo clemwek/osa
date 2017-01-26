@@ -10,7 +10,7 @@
 			<li><a href="/logout/"> logout </a></li>
 			<li role="separator" class="divider"></li>
 			<li><a href="#" id="addStoreBtn" data-toggle="modal" data-target="#addStore">add Store</a></li>
-			<li><a href="#">Add Product</a></li>
+			<li><a href="#"  data-toggle="modal" data-target="#addProd">Add Product</a></li>
 			<li><a href="#">Something else</a></li>
 		</ul>
 	</div>
@@ -28,6 +28,7 @@
 		<div class="message">
 			<h3>{{msg}}</h3>
 		</div><hr/>
+		
 	</div>
 </div>
 <h3>{{error}}</h3>
@@ -50,14 +51,58 @@
 						<label for="" class="control-label">Fill in the form bellow: </label>
 					</div>
 					<div class="col-xs-6">
-						<label class="sr-only" for="first_name">Store Name: </label>
+						<label class="sr-only" for="storeName">Store Name: </label>
 						<input type="text" name="storeName" class="form-control" id="storeName" placeholder="store name" value="{{request.form.storeName}}"  title="Please enter your strore name." required>
 						<p class="help-text small">Enter your Store name.</p>
 					</div>
 					<div class="col-xs-6">
-						<label class="sr-only" for="last_name">Location: </label>
+						<label class="sr-only" for="location">Location: </label>
 						<input type="text" name="location" class="form-control" id="location" placeholder="location" value="{{request.form.location}}" title="Please enter your location."  required>
 						<p class="help-text small">Enter your location.</p>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button type="submit" class="btn btn-success">Save changes</button>
+		</div>
+	  </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addProd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Add Product</h4>
+      </div>
+	  <form action="/addprod/" method="post">
+		<div class="modal-body">
+			<fieldset>
+				<div class="form-group">
+					<div class="control-label">
+						<label for="" class="control-label">Fill in the form bellow: </label>
+					</div>
+					<div class="col-xs-4">
+						<label class="sr-only" for="prodName">Store Name: </label>
+						<select>	
+							<optio>choose store</optio>
+							<option value="{{request.form.store_id}}">test 2</option>
+						</select><p class="help-text small">Enter your Product name.</p>
+					</div>
+					<div class="col-xs-4">
+						<label class="sr-only" for="prodName">Product Name: </label>
+						<input type="text" name="prodName" class="form-control" id="prodName" placeholder="Product name" value="{{request.form.prodName}}"  title="Please enter your product name." required>
+						<p class="help-text small">Enter your Product name.</p>
+					</div>
+					<div class="col-xs-4">
+						<label class="sr-only" for="last_name">Price: </label>
+						<input type="text" name="Price" class="form-control" id="price" placeholder="Price" value="{{request.form.price}}" title="Please enter your price."  required>
+						<p class="help-text small">Enter your price.</p>
 					</div>
 				</div>
 			</fieldset>

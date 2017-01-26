@@ -1,11 +1,11 @@
-from flask import (Flask, render_template, flash, request,
-					 url_for, redirect, session)
+from flask import (Flask, render_template, flash, request, url_for, redirect, session)
 from wtforms import Form, TextField, PasswordField, validators
 from passlib.hash import sha256_crypt
+from functools import wraps
 
+from flask import g
 import sqlite3 as sql
 import gc
-from flask import g
 
 app = Flask(__name__)
 
@@ -16,8 +16,24 @@ def home_page():
 	# flash("Flash test!!!")
 	return render_template('index.html')
 
+def login_required(f):
+	@wraps(f)
+	def wrap(*args, **kwargs):
+		if 'logged_in' in session:
+			return f(*args, **kwargs)
+		else:
+			msg = 'You need to login first'
+			return redirect(url_for('home_page', msg=msg))
+	return wrap
 
-@app.route('/signin', methods = ['POST', 'GET'])
+@app.route('/logout/')
+@login_required
+def logout():
+	session.clear()
+	msg = 'you have been logged out'
+	return redirect(url_for('home_page'), msg=msg)
+
+@app.route('/signin', methods=['POST', 'GET'])
 def signin():
 	try:
 		if request.method == 'POST':
@@ -31,7 +47,7 @@ def signin():
 
 				user = cur.execute(query).fetchall()
 				if username == user[0][1] and password == user[0][2]:
-					session['login'] = True
+					session['logged_in'] = True
 					session['id'] = user[0]
 					session['username'] = user[1]
 					return redirect(url_for('owners'))
@@ -90,5 +106,3 @@ def page_not_found(e):
 	return('four oh four!!!')
 
 app.run(debug=True)
-
-dict1 = {''}
